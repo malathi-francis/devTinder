@@ -1,4 +1,4 @@
-const { validate } = require('express-validators');
+const { validate } = require('express-validator');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
