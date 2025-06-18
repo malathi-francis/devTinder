@@ -12,8 +12,14 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require('./routes/user');
+const paymentRouter = require("./routes/payment");
+
 const cors = require("cors");
+
 require('dotenv').config();
+
+require("./utils/cronJob");
+
 
 app.use(cors({
   origin: "http://localhost:5173",
@@ -26,6 +32,7 @@ app.use('/',authRouter);
 app.use('/',profileRouter);
 app.use('/',requestRouter);
 app.use('/',userRouter);
+app.use('/',paymentRouter);
 
 app.get('/user',async(req,res)=>{
   try{
@@ -81,7 +88,7 @@ app.patch('/user',async(req,res)=>{
 connectDb()
 .then(()=>{
   console.log("DB connected successfully");
-  app.listen(process.env.PORT,() =>{
+  app.listen(process.env.PORT, '0.0.0.0',() =>{
     console.log("server successfully connected to port 3000");
   });
 })

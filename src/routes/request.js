@@ -4,6 +4,7 @@ const {userAuth} = require('../middlewares/auth');
 const connectionRequest = require('../models/connectionRequest');
 const User = require('../models/user');
 const connectionRequestModel = require('../models/connectionRequest');
+const sendEmail = require('../utils/sendEmail');
 
 requestRouter.post('/request/:status/:toUserId',userAuth,async(req,res) => {
   try{
@@ -24,8 +25,19 @@ requestRouter.post('/request/:status/:toUserId',userAuth,async(req,res) => {
     toUserId,
     status
   });
+const findEmail = await User.findById(toUserId);
+console.log("from = ",findEmail);
 
   let data = await connectionRequestData.save();
+  console.log("email res = ",req.user.email);
+
+  if(status == "interested") {
+    let mailContent = `<p>"Hi ${findEmail.firstName}, ${req.user.firstName} wants to connect with you."</p>`
+  const emailRes = await sendEmail.run(findEmail.email,"A friend Request to you!!",mailContent);
+
+  console.log("email res = ",emailRes);
+  };
+  
 
   res.json({
     message: "connection success",
