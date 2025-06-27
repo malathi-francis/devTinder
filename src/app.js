@@ -13,8 +13,10 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require('./routes/user');
 const paymentRouter = require("./routes/payment");
-
+const initializeSocket = require('./utils/socket')
+const http = require("http");
 const cors = require("cors");
+const chatRouter = require("./routes/chat");
 
 require('dotenv').config();
 
@@ -33,6 +35,7 @@ app.use('/',profileRouter);
 app.use('/',requestRouter);
 app.use('/',userRouter);
 app.use('/',paymentRouter);
+app.use('/',chatRouter);
 
 app.get('/user',async(req,res)=>{
   try{
@@ -76,7 +79,6 @@ app.patch('/user',async(req,res)=>{
     const user = await User.findByIdAndUpdate(userId,filter,
       {returnDocument:"after",
     runValidators:true}); // this run will enable the validators we gave in model file
-    console.log("user ",user);
     
     res.send("User updation Success");
   }catch(err){
@@ -84,11 +86,13 @@ app.patch('/user',async(req,res)=>{
   }
 });
 
+const server = http.createServer(app);
+initializeSocket(server);
 
 connectDb()
 .then(()=>{
   console.log("DB connected successfully");
-  app.listen(process.env.PORT, '0.0.0.0',() =>{
+  server.listen(process.env.PORT, '0.0.0.0',() =>{
     console.log("server successfully connected to port 3000");
   });
 })

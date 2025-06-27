@@ -1,4 +1,4 @@
-const { default: mongoose, connection } = require("mongoose")
+const mongoose = require('mongoose');
 
 const paymentSchema = new mongoose.Schema({
   orderId: {

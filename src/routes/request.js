@@ -8,8 +8,6 @@ const sendEmail = require('../utils/sendEmail');
 
 requestRouter.post('/request/:status/:toUserId',userAuth,async(req,res) => {
   try{
-  console.log("connection request sent");
-
   let allowedStatus = ['interested','ignored'];
   if(!allowedStatus.includes(req.params.status)) throw new Error("invalid status");
 
@@ -26,16 +24,13 @@ requestRouter.post('/request/:status/:toUserId',userAuth,async(req,res) => {
     status
   });
 const findEmail = await User.findById(toUserId);
-console.log("from = ",findEmail);
 
   let data = await connectionRequestData.save();
-  console.log("email res = ",req.user.email);
 
   if(status == "interested") {
     let mailContent = `<p>"Hi ${findEmail.firstName}, ${req.user.firstName} wants to connect with you."</p>`
   const emailRes = await sendEmail.run(findEmail.email,"A friend Request to you!!",mailContent);
 
-  console.log("email res = ",emailRes);
   };
   
 
@@ -50,12 +45,10 @@ console.log("from = ",findEmail);
 
 requestRouter.post('/request/review/:status/:requestId',userAuth,async(req,res) => {
 try{
-  console.log("true true");
   
   let loggedInUser = req.user;
   let requestId = req.params.requestId;
   let status = req.params.status;
-console.log("status =",status);
 
   let allowedStatus = ['accepted','rejected'];
 

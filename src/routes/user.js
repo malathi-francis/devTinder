@@ -54,7 +54,6 @@ userRouter.get('/feed',userAuth,async(req,res) => {
       {toUserId: loggedInUser}
     ]
   });
-  console.log({connectionRequest});
   
   const hideUserIds = new Set();
   connectionRequest.forEach((req)=>{
@@ -68,7 +67,6 @@ userRouter.get('/feed',userAuth,async(req,res) => {
       {_id: {$ne: loggedInUser._id}}
     ]
   }).select("firstName lastName age photoUrl gender skills").skip(skip).limit(limit);
-  console.log("data = ",data);
   if(!data) return res.status(400).send("no daa found");
 
   res.json({

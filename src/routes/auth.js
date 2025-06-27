@@ -31,7 +31,6 @@ authRouter.post('/login',async(req,res) => {
   try{    
     const {password,email} = req.body;
     const user = await User.findOne({email:email});
-    console.log("user>>>>. ",password,email);
     
     if(!user) throw new Error("no user found");
     else{
@@ -39,7 +38,6 @@ authRouter.post('/login',async(req,res) => {
       if(checkPassword){
 
         const token = await user.getJWT();
-        console.log("token : ",token);
 
         res.cookie("token",token);
         res.send(user);

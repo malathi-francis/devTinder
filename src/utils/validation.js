@@ -21,7 +21,6 @@ const validateSignupData = (req)=>{
 };
 
 const validateUpdateData = (req) =>{
-  console.log("validate called!!");
   
   let allowedUpdateKeys = ['firstName','lastName','email','age','gender','photoUrl','about','skills']
 

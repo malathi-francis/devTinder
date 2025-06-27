@@ -8,7 +8,6 @@ const bcrypt = require('bcrypt');
 profileRouter.get('/profile/view',userAuth,async(req,res) => {
   try{
   const user = req.user;
-  console.log("cookies = ",user);
   res.send(user);
   } catch(err) {
     throw new Error("ERROR: " + err.message);
@@ -21,10 +20,8 @@ profileRouter.patch('/profile/edit',userAuth,async(req,res) => {
       throw new Error("invalid update value");
     };
     let loggedinUser = req.user;
-    console.log("user = ",req.user);
 
     Object.keys(req.body) .forEach((key)=>loggedinUser[key] = req.body[key]);
-    console.log("user = ",req.user);
     await loggedinUser.save();
 
     res.json({
@@ -39,10 +36,8 @@ profileRouter.patch('/profile/edit',userAuth,async(req,res) => {
 profileRouter.patch('/profile/forgotpassword',userAuth,async(req,res)=> {
   try{
     let loggedinUser = req.user;
-    console.log("user = ",loggedinUser);
     let {oldPass} = req.body;
     const checkPassword = await loggedinUser.validatePassword(oldPass);
-    console.log("checkPassword = ",checkPassword);
     
     if(!checkPassword) throw new Error("Password mismatched!");
       let {newPass} = req.body;
